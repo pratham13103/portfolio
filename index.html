@@ -173,12 +173,12 @@
             <!--===== CONTACT =====-->
             <section class="contact section" id="contact">
                 <h2 class="section-title">Contact</h2>
-
+            
                 <div class="contact__container bd-grid">
                     <form action="" class="contact__form">
-                        <input type="text" id="name" placeholder="Name" class="contact__input">
-                        <input type="email" id="email" placeholder="Email" class="contact__input">
-                        <textarea id="message" cols="0" rows="10" class="contact__input" placeholder="Message"></textarea>
+                        <input type="text" id="name" placeholder="Name" class="contact__input" required>
+                        <input type="email" id="email" placeholder="Email" class="contact__input" required>
+                        <textarea id="message" cols="0" rows="10" class="contact__input" placeholder="Message" required></textarea>
                         <input type="button" value="Send" class="contact__button button" onclick="sendOTP()">
                     </form>                    
                 </div>
@@ -202,25 +202,32 @@
 
         <!--===== MAIN JS =====-->
         <script src="assets/js/main.js"></script>
-        <script>
-            // Function to send OTP
+        <script> 
             async function sendOTP() {
-                const name = document.getElementById("name").value;
-                const email = document.getElementById("email").value;
-                const message = document.getElementById("message").value;
+                const name = document.getElementById("name").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const message = document.getElementById("message").value.trim();
         
-                const response = await fetch('http://localhost:8080', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name, email, message })
-                });
+                if (!name || !email || !message) {
+                    alert('All fields are required.');
+                    return;
+                }
         
-                if (response.ok) {
-                    alert('OTP sent successfully!');
-                } else {
-                    alert('Error sending OTP!');
+                try {
+                    const response = await fetch('http://localhost:8080', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, message }),
+                    });
+        
+                    if (response.ok) {
+                        alert('Email sent successfully!');
+                    } else {
+                        alert('Error sending email!');
+                    }
+                } catch (error) {
+                    alert('An error occurred while sending the email.');
+                    console.error(error);
                 }
             }
         </script>
