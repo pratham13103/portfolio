@@ -6,7 +6,10 @@ const express = require("express");
 const app = express();
 
 // Use CORS Middleware
-app.use(cors());
+app.use(cors({
+    origin: '*', // Allow all origins or specify a domain for your mobile app
+    methods: 'GET, POST',
+}));
 app.use(express.json()); // To parse JSON request bodies
 
 app.post("/", (req, res) => {
